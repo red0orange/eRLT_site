@@ -63,11 +63,6 @@ const cover = document.getElementById("overview-play");
 overview.controls = false;
 overview.addEventListener("play", () => { cover.hidden = true; overview.controls = true; pauseOtherGroups(document.querySelector(".overview-player")); });
 cover.addEventListener("click", () => { overview.play().catch(()=>{cover.hidden=true;overview.controls=true;}); });
-document.querySelectorAll("[data-seek]").forEach(button => button.addEventListener("click", () => {
-  const seekAndPlay = () => { overview.currentTime = Number(button.dataset.seek); overview.play().catch(()=>{cover.hidden=true;overview.controls=true;}); };
-  if (overview.readyState >= 1) seekAndPlay(); else { overview.addEventListener("loadedmetadata",seekAndPlay,{once:true}); overview.load(); }
-  document.getElementById("video").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
-}));
 
 if ("IntersectionObserver" in window) {
   const loader = new IntersectionObserver(entries => entries.forEach(entry=>{if(entry.isIntersecting){loadVideo(entry.target);loader.unobserve(entry.target);}}),{rootMargin:"400px 0px"});
