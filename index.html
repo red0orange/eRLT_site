@@ -35,27 +35,24 @@
 
   <nav class="section-nav" aria-label="Page sections">
     <a class="nav-brand" href="#top">eRLT</a>
-    <div class="nav-links"><a href="#abstract">Abstract</a><a href="#overview">Overview</a><a href="#method">Method</a><a href="#experiments">Real-world</a><a href="#simulation">Simulation</a><a href="#citation">Citation</a></div>
+    <div class="nav-links"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#experiments">Real-world</a><a href="#simulation">Simulation</a><a href="#citation">Citation</a></div>
   </nav>
 
   <main class="container">
-    <section class="intro-summary" id="abstract" aria-labelledby="abstract-heading">
+    <section class="intro-summary" id="abstract" aria-label="Research summary">
       <div class="abstract-copy">
-        <h2 id="abstract-heading">Abstract</h2>
         <p>Vision-Language-Action (VLA) models provide strong behavioral priors for robotic manipulation, yet efficiently adapting them to downstream tasks remains challenging. Recent work addresses this challenge by adapting frozen VLAs through online reinforcement learning (RL), whose sample efficiency depends on the quality of the state representation used by the actor and critic. Existing methods construct such representations either with VLA-independent visual encoders or through fixed compression of internal VLA representations. Neither design explicitly extracts the task-specific action-relevant VLA features most useful for downstream action refinement and action-value estimation, therefore limiting sample efficiency.</p>
         <p>To address this limitation, we introduce eRLT, which constructs an effective state representation by routing task-specific action-relevant information across both tokens and layers of the frozen VLA. Specifically, learned routing tokens dynamically aggregate visual-language features at multiple depths, while a lightweight layer router combines these summaries into a fixed-dimensional RL token. The routing module is initialized using expert demonstrations to capture features predictive of expert actions and then refined using critic feedback from online interactions for action-value estimation.</p>
         <p>Across seven LIBERO and RoboTwin tasks, eRLT improves mean normalized learning-curve AUC by up to 23.7% over representative baselines. Real-robot experiments on USB connector insertion and motherboard ribbon-cable insertion further show AUC improvements of 108.9% and 46.7%, respectively, over the strongest baseline.</p>
       </div>
-      <section class="intro-video" id="video" aria-labelledby="video-heading">
-        <h2 id="video-heading">Research video <span>3:20</span></h2>
+      <section class="intro-video" id="video" aria-label="Research video">
         <div class="overview-player">
           <video id="overview-video" controls playsinline preload="none" poster="assets/media/overview.jpg" aria-label="Full eRLT supplementary video, 3 minutes 20 seconds"><source src="assets/media/overview.mp4" type="video/mp4"></video>
           <button class="video-cover" id="overview-play" aria-label="Play the full research video">
             <span class="play-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg></span>
-            <span class="cover-label">Watch eRLT in action</span>
           </button>
         </div>
-        <div class="video-caption"><span>Learning precise insertion with a frozen VLA.</span><div class="chapters"><button data-seek="20">USB insertion <span>↗</span></button><button data-seek="100">Ribbon cable <span>↗</span></button></div></div>
+        <div class="video-caption"><span class="video-duration" aria-label="Full video duration: 3 minutes 20 seconds">3:20</span><div class="chapters"><button data-seek="20">USB insertion <span>↗</span></button><button data-seek="100">Ribbon cable <span>↗</span></button></div></div>
       </section>
     </section>
 

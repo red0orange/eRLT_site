@@ -8,19 +8,17 @@
 
 .title-term{white-space:nowrap}
 
-.intro-summary{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:44px;align-items:start;padding-top:38px}
-.abstract-copy h2,.intro-summary .intro-video h2{font-size:24px;letter-spacing:-.45px;text-align:left;line-height:1.4;margin:0 0 20px}
-.abstract-copy p{font-size:15px;line-height:1.85;margin:0 0 17px}
-.abstract-copy p:last-child{margin-bottom:0}
-.intro-summary .intro-video{padding-top:0;min-width:0}
-.intro-summary .intro-video h2{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.intro-video h2 span{font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0}
-.intro-summary .video-caption{flex-direction:column;align-items:flex-start;gap:8px}
-.intro-summary .chapters{flex-wrap:wrap;gap:8px 20px}
-.intro-summary .chapters button{min-height:28px}
+.intro-summary{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:22px 40px;align-items:start;padding-top:38px}
+.abstract-copy{display:contents}
+.abstract-copy p{grid-column:1/-1;font-size:15px;line-height:1.85;margin:0}
+.abstract-copy p:first-child{grid-column:1;grid-row:1}
+.intro-summary .intro-video{grid-column:2;grid-row:1;padding-top:0;min-width:0}
+.intro-summary .video-caption{flex-direction:row;align-items:center;gap:12px;margin-top:8px;font-size:12px}
+.video-duration{font-variant-numeric:tabular-nums}
+.intro-summary .chapters{flex-wrap:wrap;justify-content:flex-end;gap:4px 18px}
+.intro-summary .chapters button{min-height:28px;font-size:12px}
 .intro-summary .play-circle{width:52px;height:52px}
 .intro-summary .play-circle svg{width:23px;height:23px}
-.intro-summary .cover-label{left:18px;bottom:16px;font-size:16px}
-@media(max-width:1000px){.intro-summary{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:30px}.abstract-copy p{font-size:14px;line-height:1.8}}
-@media(max-width:800px){.intro-summary{grid-template-columns:1fr;gap:32px}.abstract-copy p{font-size:15px}.intro-summary .intro-video{width:100%;max-width:520px;justify-self:center}}
-@media(max-width:600px){.intro-summary{padding-top:28px;gap:28px}.abstract-copy h2,.intro-summary .intro-video h2{font-size:22px;margin-bottom:16px}.abstract-copy p{font-size:14px;line-height:1.85}.intro-video h2 span{font-size:12px}.intro-summary .cover-label{font-size:15px}}
+@media(max-width:1000px){.intro-summary{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:30px}.abstract-copy p{font-size:14px;line-height:1.8}}
+@media(max-width:800px){.intro-summary{display:block}.abstract-copy{display:block}.abstract-copy p{font-size:15px;margin:0 0 18px}.abstract-copy p:last-child{margin-bottom:0}.intro-summary .intro-video{width:100%;max-width:520px;margin:28px auto 0}}
+@media(max-width:600px){.intro-summary{padding-top:28px}.abstract-copy p{font-size:14px;line-height:1.85}.intro-summary .chapters{gap:4px 14px}.intro-summary .chapters button{font-size:11px}}
