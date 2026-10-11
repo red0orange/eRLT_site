@@ -1,0 +1,5 @@
+{
+  "name": "erlt-project-page",
+  "private": true,
+  "scripts": { "dev": "node preview.mjs", "start": "node preview.mjs" }
+}

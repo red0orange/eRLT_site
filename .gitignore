@@ -1,0 +1,18 @@
+# Original local materials are not part of the published website.
+/resources/
+
+# Local dependencies and generated files.
+node_modules/
+.env
+.env.*
+.DS_Store
+__pycache__/
+*.pyc
+*.log
+*.tmp.*
+*.zip
+*.tar.gz
+/dist/
+
+# Local preview images are not deployment assets.
+/previews/

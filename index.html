@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#28645c">
+  <meta name="description" content="eRLT constructs action-relevant RL tokens from a frozen VLA to improve the sample efficiency of online reinforcement learning.">
+  <title>eRLT · Action-Relevant Token Routing</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#overview">Skip to content</a>
+  <header class="paper-header" id="top">
+    <h1><span class="project-name">eRLT</span>: Efficient VLA Reinforcement Learning<br class="title-break"> via <span class="title-term">Action-Relevant</span> Token Routing</h1>
+    <div class="authors" aria-label="Authors">
+      <span>Dehao Huang<sup>1,2,3</sup></span><span>Jianbang Liu<sup>3</sup></span><span>Jianpan Gao<sup>3</sup></span><span>Chao Tang<sup>3</sup></span><span>Zilang Cen<sup>4,2</sup></span><br class="author-break">
+      <span>Zedong Dan<sup>5,2</sup></span><span>Jiaheng Wang<sup>3</sup></span><span>Tingguang Li<sup>3,†</sup></span><span>Yue Wang<sup>2</sup></span><span>Hong Zhang<sup>1</sup></span>
+    </div>
+    <div class="affiliations" aria-label="Author affiliations">
+      <span><sup>1</sup> Southern University of Science and Technology</span>
+      <span><sup>2</sup> Beijing Zhongguancun Academy</span>
+      <span><sup>3</sup> Samsung Robotics eXperience</span>
+      <span><sup>4</sup> Wuhan University</span>
+      <span><sup>5</sup> Sun Yat-sen University</span>
+    </div>
+    <p class="author-notes"><sup>†</sup> Project Leader</p>
+    <div class="resource-links">
+      <a class="button primary" href="https://arxiv.org/abs/2610.00913" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h6"/></svg>Paper</a>
+      <a class="button primary" href="#video"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4z"/></svg>Video</a>
+      <a class="button secondary" href="#experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M7 15V9M12 15V5M17 15v-3"/></svg>Experiments</a>
+    </div>
+    <p class="hero-summary">Better RL representations. More sample-efficient VLA adaptation.</p>
+  </header>
+
+  <nav class="section-nav" aria-label="Page sections">
+    <a class="nav-brand" href="#top">eRLT</a>
+    <div class="nav-links"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#experiments">Real-world</a><a href="#simulation">Simulation</a><a href="#citation">Citation</a></div>
+  </nav>
+
+  <main class="container">
+    <section class="intro-video" id="video" aria-label="Research video">
+      <div class="overview-player">
+        <video id="overview-video" controls playsinline preload="none" poster="assets/media/overview.jpg" aria-label="Full eRLT supplementary video, 3 minutes 20 seconds"><source src="assets/media/overview.mp4" type="video/mp4"></video>
+        <button class="video-cover" id="overview-play" aria-label="Play the full research video">
+          <span class="play-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg></span>
+          <span class="cover-label">Watch eRLT in action <small>Research video · 3:20</small></span>
+        </button>
+      </div>
+      <div class="video-caption"><span>Learning precise insertion with a frozen VLA.</span><div class="chapters"><button data-seek="20">USB insertion <span>↗</span></button><button data-seek="100">Ribbon cable <span>↗</span></button></div></div>
+    </section>
+
+    <section class="paper-section" id="overview">
+      <h2>Overview</h2>
+      <p class="section-lead">The right features make online learning more efficient.</p>
+      <div class="callout"><p><strong>eRLT</strong> routes task-specific, action-relevant information across the tokens and layers of a <strong>frozen VLA</strong>. The resulting RL token gives a lightweight actor-critic a more useful state representation for action refinement and value estimation.</p></div>
+      <figure class="paper-figure">
+        <button class="figure-zoom" data-image="assets/images/intro_fig1_v3-up.png" data-caption="Action-relevant information is distributed across the tokens and layers of a frozen VLA." aria-label="Enlarge the motivation figure"><img src="assets/images/intro_fig1_v3-up.png" width="2471" height="790" loading="lazy" alt="Motivation: fixed layer and token choices can miss useful information, while eRLT routes action-relevant features across both dimensions."><span class="zoom-label">↗ Enlarge</span></button>
+        <figcaption>Useful information is distributed across VLA tokens and layers. eRLT learns what to retain for the downstream task.</figcaption>
+      </figure>
+      <div class="result-highlights" aria-label="Main results">
+        <div><strong>+23.7<span>%</span></strong><span>Mean AUC · 7 simulation tasks</span><small>relative to RLT*</small></div>
+        <div><strong>+108.9<span>%</span></strong><span>AUC · USB insertion</span><small>relative to RLT</small></div>
+        <div><strong>+46.7<span>%</span></strong><span>AUC · Ribbon-cable insertion</span><small>relative to RLT</small></div>
+      </div>
+      <p class="metric-note">AUC measures average success over a fixed interaction budget. Higher AUC means learning successful behavior earlier and sustaining it.</p>
+    </section>
+
+    <section class="paper-section" id="method">
+      <h2>Method</h2>
+      <p class="section-lead">A compact RL token, informed by actions and refined through experience.</p>
+      <figure class="paper-figure method-figure">
+        <button class="figure-zoom" data-image="assets/images/method_v02.png" data-caption="eRLT: multi-layer token routing, offline action-predictive initialization, and online critic-guided adaptation." aria-label="Enlarge the eRLT method diagram"><img src="assets/images/method_v02.png" width="4499" height="2305" loading="lazy" alt="eRLT architecture showing token and layer routing, offline expert-action prediction, and online critic feedback."><span class="zoom-label">↗ Enlarge</span></button>
+      </figure>
+      <div class="method-steps">
+        <div><span class="step-number">01</span><h3>Route useful information</h3><p>Learned routing tokens aggregate visual-language features at multiple depths. A layer router combines these summaries into one RL token.</p></div>
+        <div><span class="step-number">02</span><h3>Initialize with actions</h3><p>Expert-action prediction on existing demonstrations gives the representation an action-relevant starting point.</p></div>
+        <div><span class="step-number">03</span><h3>Refine with experience</h3><p>Online critic feedback adapts the routing module for action-value estimation. The pretrained VLA stays frozen throughout.</p></div>
+      </div>
+    </section>
+
+    <section class="paper-section" id="experiments">
+      <h2>Real-world Experiments</h2>
+      <p class="section-lead">Learning precise alignment and contact-rich insertion.</p>
+      <p class="section-intro">We evaluate on two precision manipulation tasks using the left arm of an RB-Y1 robot and two wrist-mounted cameras. Within each task, all adapted policies share the frozen VLA and online RL procedure; only the state representation changes.</p>
+      <div class="task-tabs" role="tablist" aria-label="Real-world task"><button id="tab-usb" role="tab" aria-selected="true" aria-controls="panel-usb" data-task="usb">USB Insertion</button><button id="tab-cable" role="tab" aria-selected="false" aria-controls="panel-cable" tabindex="-1" data-task="cable">Ribbon-cable Insertion</button></div>
+      <div id="panel-usb" class="task-panel" role="tabpanel" aria-labelledby="tab-usb"></div>
+      <div id="panel-cable" class="task-panel" role="tabpanel" aria-labelledby="tab-cable" hidden></div>
+      <noscript><p>Enable JavaScript to use the side-by-side video comparisons. You can still watch the full research video above.</p></noscript>
+      <details class="protocol-details"><summary>Experimental protocol & comparison methods</summary><div><p><strong>Frozen VLA</strong> is the task-specific policy before online adaptation. <strong>DSRL*</strong> uses an independent visual encoder; the asterisk denotes the use of this representation in the shared RL pipeline. <strong>RLT</strong> uses the original RLT representation. <strong>eRLT</strong> learns action-relevant token routing.</p><p>USB insertion uses 80 trajectories and ribbon-cable insertion uses 90, including warm-up and human-assisted episodes. All methods follow the same human-in-the-loop protocol. AUC summarizes the full learning curve. Adapted-policy success rates use the final 10-episode window; the frozen reference uses 10 evaluation trials. Edited video counters describe the shown rollouts, not the complete statistical evaluation.</p></div></details>
+    </section>
+
+    <section class="paper-section" id="simulation">
+      <h2>Simulation Results</h2>
+      <p class="section-lead">Consistent improvements across tasks and robot embodiments.</p>
+      <p class="section-intro">Across four LIBERO tasks and three RoboTwin tasks, eRLT achieves the strongest mean normalized AUC. It outperforms RLT* on all seven tasks and DSRL* on six of seven.</p>
+      <figure class="paper-figure"><button class="figure-zoom" data-image="assets/images/simulation_exp_tasks.png" data-caption="The seven simulation tasks in LIBERO and RoboTwin." aria-label="Enlarge the simulation task images"><img src="assets/images/simulation_exp_tasks.png" width="4182" height="1968" loading="lazy" alt="Four LIBERO tasks and three RoboTwin manipulation tasks."><span class="zoom-label">↗ Enlarge</span></button></figure>
+      <div class="table-scroll"><table class="results-table simulation-summary"><caption>Mean normalized learning-curve AUC across 7 tasks <span>↑ Higher is better</span></caption><thead><tr><th scope="col">Method</th><th scope="col">Mean AUC</th><th scope="col">State representation</th></tr></thead><tbody><tr><th scope="row">DSRL*</th><td>0.585</td><td>VLA-independent visual encoder</td></tr><tr><th scope="row">RLT*</th><td>0.506</td><td>Fixed compression of final-layer VLA features</td></tr><tr class="ours-row"><th scope="row">eRLT <span class="ours-tag">Ours</span></th><td><strong>0.626</strong></td><td>Action-relevant routing across tokens and layers</td></tr></tbody></table></div>
+      <figure class="paper-figure curves-figure"><button class="figure-zoom" data-image="assets/images/main_comparson.png" data-caption="Learning curves on six representative tasks. Dark curves show smoothed trends; light curves show raw evaluations." aria-label="Enlarge the simulation learning curves"><img src="assets/images/main_comparson.png" width="4969" height="1875" loading="lazy" alt="Success-rate learning curves on three LIBERO and three RoboTwin tasks, comparing eRLT with RLT and DSRL representations."><span class="zoom-label">↗ Enlarge</span></button><figcaption>Learning curves on six representative tasks. Dark curves show smoothed trends; light curves show raw evaluations. Original paper colors are retained.</figcaption></figure>
+      <details class="protocol-details"><summary>View results for all seven tasks</summary><div class="table-scroll"><table class="results-table task-results"><thead><tr><th scope="col">Task</th><th scope="col">DSRL*</th><th scope="col">RLT*</th><th scope="col">eRLT</th></tr></thead><tbody><tr><th scope="row">LIBERO · Drawer Opening</th><td>0.856</td><td>0.709</td><td><strong>0.881</strong></td></tr><tr><th scope="row">LIBERO · Bowl-to-Plate</th><td>0.801</td><td>0.707</td><td><strong>0.818</strong></td></tr><tr><th scope="row">LIBERO · Cabinet-Bowl-to-Plate</th><td>0.130</td><td>0.171</td><td><strong>0.247</strong></td></tr><tr><th scope="row">LIBERO · Two-Moka-Pots</th><td>0.244</td><td>0.207</td><td><strong>0.264</strong></td></tr><tr><th scope="row">RoboTwin · Adjust Bottle</th><td>0.804</td><td>0.797</td><td><strong>0.897</strong></td></tr><tr><th scope="row">RoboTwin · Move Can–Pot</th><td><strong>0.608</strong></td><td>0.461</td><td>0.523</td></tr><tr><th scope="row">RoboTwin · Place Container Plate</th><td>0.649</td><td>0.490</td><td><strong>0.752</strong></td></tr></tbody></table></div></details>
+    </section>
+
+    <section class="paper-section" id="ablations">
+      <h2>What Matters in eRLT?</h2>
+      <p class="section-lead">Action-relevant routing and a useful starting point.</p>
+      <div class="ablation-layout"><div class="table-scroll"><table class="results-table"><caption>Component ablations · Bowl-to-Plate</caption><thead><tr><th scope="col">Variant</th><th scope="col">AUC ↑</th></tr></thead><tbody><tr class="ours-row"><th scope="row">eRLT</th><td><strong>0.818</strong></td></tr><tr><th scope="row">Without offline initialization</th><td>0.762</td></tr><tr><th scope="row">Without online adaptation</th><td>0.803</td></tr><tr><th scope="row">Without token-wise routing</th><td>0.742</td></tr><tr><th scope="row">Without layer-wise routing</th><td>0.797</td></tr></tbody></table></div><div class="ablation-notes"><h3>Each component contributes.</h3><p>Removing token-wise routing causes the largest drop in AUC. An action-predictive initialization also provides a strong starting point, while layer-wise routing and online adaptation offer complementary gains.</p><h3>A compact representation is enough.</h3><p>Increasing the number of routing tokens does not consistently improve performance. eRLT uses one routing token by default.</p></div></div>
+    </section>
+
+    <section class="paper-section citation-section" id="citation">
+      <div class="citation-heading"><h2>Citation</h2><button class="button copy-button" id="copy-citation" aria-label="Copy BibTeX citation">Copy BibTeX</button></div>
+      <pre><code id="bibtex">@article{huang2026erlt,
+  title={eRLT: Efficient VLA Reinforcement Learning via Action-Relevant Token Routing},
+  author={Huang, Dehao and Liu, Jianbang and Gao, Jianpan and Tang, Chao and Cen, Zilang and Dan, Zedong and Wang, Jiaheng and Li, Tingguang and Wang, Yue and Zhang, Hong},
+  journal={arXiv preprint arXiv:2610.00913},
+  year={2026}
+}</code></pre>
+      <span class="sr-only" id="copy-status" role="status"></span>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span><strong>eRLT</strong> · Action-Relevant Token Routing</span><span>Design inspired by <a href="https://falcon-vla.github.io/" target="_blank" rel="noopener">FALCON</a><a class="back-top" href="#top">Back to top ↑</a></span></footer>
+  <dialog id="figure-dialog" aria-labelledby="dialog-caption"><button class="dialog-close" aria-label="Close enlarged figure">✕</button><img id="dialog-image" alt=""><p id="dialog-caption"></p></dialog>
+</body>
+</html>
