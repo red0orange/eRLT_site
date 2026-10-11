@@ -4,7 +4,7 @@
 
 论文：[arXiv:2610.00913](https://arxiv.org/abs/2610.00913)
 
-白底与墨绿色的纯静态页面，无需构建、安装依赖或配置服务端。设计参考 [FALCON](https://falcon-vla.github.io/)。作者、单位角标及项目负责人标记与 arXiv 正式版本一致。
+白底与墨绿色的纯静态页面，无需构建、安装依赖或配置服务端。设计参考 [FALCON](https://falcon-vla.github.io/)。作者与单位角标和 arXiv 正式版本一致。
 
 ## 推送到 GitHub
 
@@ -53,10 +53,11 @@ npm run dev
 | `app.js` | 实验切换、整组播放、图片放大、引用复制 |
 | `assets/images/` | 网页实际使用的四张论文插图 |
 | `assets/media/` | 15 段网页 MP4 视频及对应封面 |
+| `assets/eRLT_arxiv.pdf` | Paper 按钮打开的正式论文 PDF |
 | `citation.bib` | 与网页一致的完整 BibTeX |
 | `preview.mjs` | 本地预览服务器 |
 | `scripts/prepare_media.py` | 可选：从本地原始录像重新生成网页视频 |
 
 网页视频已准备好，发布时不需要运行转码脚本。视频、封面和论文插图合计约 55 MB，单个文件最大约 14 MB，直接随 Git 提交，无需 Git LFS。
 
-作者与单位信息来自 [arXiv 论文首页](https://arxiv.org/pdf/2610.00913)。Paper 按钮指向 arXiv 正式页面。代码仓库入口将在有正式链接后补充。
+作者与单位信息来自 [arXiv 论文首页](https://arxiv.org/pdf/2610.00913)。Paper 按钮使用提供的 `eRLT_arxiv.pdf` 原文件，已随仓库收录。代码仓库入口将在有正式链接后补充。
